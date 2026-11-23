@@ -89,6 +89,7 @@ h2{margin:0;padding:5px 14px;font-size:12.5px;background:var(--line);color:var(-
   <span class="chip"><i style="background:var(--warn)"></i>Não necessário <span id="c-nn">0</span></span>
   <span class="chip" id="sendmsg" role="status"></span>
   <button id="b-send">Enviar</button>
+  <button id="b-open">Abrir no formulário</button>
   <button id="b-rep">Relatório</button>
   <button id="b-reset">Restaurar padrão</button>
 </div>
@@ -268,11 +269,32 @@ bs.onclick=function(){
     if(best[e]===undefined||SEV[state[i]]>SEV[best[e]])best[e]=state[i]}
   var f=document.createElement("form");f.method="POST";f.action=FORM_URL;f.target="gf";f.style.display="none";
   function add(n,v){var x=document.createElement("input");x.type="hidden";x.name="entry."+n;x.value=v;f.appendChild(x)}
-  add(E_MON,mon.value);add(E_COD,cod.value.trim());
+  function raw(n,v){var x=document.createElement("input");x.type="hidden";x.name=n;x.value=v;f.appendChild(x)}
+  add(E_MON,mon.value);add(E_COD,cod.value.trim());raw("pageHistory",PAGES);raw("fvv","1");
   for(var e2 in best)add(e2,ST[best[e2]][0]);
   document.body.appendChild(f);sending=true;bs.disabled=true;sm.textContent="Enviando…";
   if(miss.length)console.warn("Campos sem entry no formulário:",miss);
-  f.submit();setTimeout(function(){f.remove()},1000);
+  var body=new URLSearchParams();
+  [].forEach.call(f.querySelectorAll("input"),function(x){body.append(x.name,x.value)});
+  fetch(FORM_URL,{method:"POST",mode:"no-cors",body:body}).then(function(){
+    sending=false;bs.disabled=false;f.remove();
+    sm.textContent="Envio disparado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" (sem confirmação do Google) – verifique a planilha";
+  }).catch(function(){f.submit();setTimeout(function(){f.remove()},1000)});
+};
+/* Formulário com seções: o Google só grava se receber o histórico de páginas (0 = primeira). Ajuste se o nº de páginas for outro. */
+var PAGES="0,1,2,3,4,5,6,7,8,9,10";
+var VIEW_URL=FORM_URL.replace("/formResponse","/viewform");
+document.getElementById("b-open").onclick=function(){
+  var mon=document.getElementById("monitor"),cod=document.getElementById("codigo");
+  if(!mon.value){sm.textContent="Selecione o monitor antes de abrir o formulário.";mon.focus();return}
+  if(!cod.value.trim()){sm.textContent="Digite o código antes de abrir o formulário.";cod.focus();return}
+  var best={};
+  for(var i in state){var e=ENT[meta[i].k];if(!e)continue;if(best[e]===undefined||SEV[state[i]]>SEV[best[e]])best[e]=state[i]}
+  var u=VIEW_URL+"?usp=pp_url&entry."+E_MON+"="+encodeURIComponent(mon.value)+"&entry."+E_COD+"="+encodeURIComponent(cod.value.trim());
+  for(var e2 in best)u+="&entry."+e2+"="+encodeURIComponent(ST[best[e2]][0]);
+  var a=document.createElement("a");a.href=u;a.target="_blank";a.rel="noopener";a.textContent="Clique aqui para abrir o formulário preenchido";
+  a.style.color="inherit";a.style.fontWeight="700";
+  sm.textContent="";sm.appendChild(a);
 };
 count();
 </script>
