@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ficha de Investigação Dengue e Febre de Chikungunya – Conferência</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#e9ece8;--paper:#fff;--ink:#1b2420;--mute:#5d6b64;--line:#2b3731;--hair:#c5cdc8;
+  --ok:#1f8a4c;--bad:#c62f2f;--warn:#d9730a;--inc:#7b3fb8;
+  --pop:#fff;--bar:#1b2420;--bar-ink:#f2f5f3;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141a17;--paper:#1e2622;--ink:#e8eee9;--mute:#9aa8a0;--line:#8a9a91;--hair:#33403a;
+  --ok:#43c27a;--bad:#ff6b6b;--warn:#ffa043;--inc:#b98cf0;--pop:#27312c;--bar:#0c100e;--bar-ink:#e8eee9}}
+:root[data-theme="dark"]{--bg:#141a17;--paper:#1e2622;--ink:#e8eee9;--mute:#9aa8a0;--line:#8a9a91;--hair:#33403a;
+  --ok:#43c27a;--bad:#ff6b6b;--warn:#ffa043;--inc:#b98cf0;--pop:#27312c;--bar:#0c100e;--bar-ink:#e8eee9}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.35 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bar);z-index:30}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bar);color:var(--bar-ink);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:10px 16px}
+.bar b{font-size:15px;margin-right:auto}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px}
+.chip i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.bar button{font:inherit;font-size:12.5px;font-weight:600;background:transparent;color:inherit;border:1px solid #6b7a72;border-radius:6px;padding:5px 10px;cursor:pointer}
+.bar button:hover{background:#ffffff1f}
+main{max-width:980px;margin:16px auto;padding:0 10px 60px}
+.sheet{background:var(--paper);border:2px solid var(--line);border-radius:4px;overflow:hidden}
+.head{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:2px solid var(--line);flex-wrap:wrap}
+.head h1{font-size:17px;margin:0;line-height:1.2}
+.head small{color:var(--mute);display:block;font-weight:400;font-size:12px;margin-top:3px}
+.def{font-size:11.5px;color:var(--mute);padding:8px 14px;border-bottom:1px solid var(--hair);margin:0}
+h2{margin:0;padding:5px 14px;font-size:12.5px;background:var(--line);color:var(--paper);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(12,1fr)}
+.f{grid-column:span var(--s,4);position:relative;text-align:left;font:inherit;color:inherit;background:transparent;
+  border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 9px 8px;min-height:48px;cursor:pointer;
+  display:flex;flex-direction:column;gap:2px;--c:var(--ok);
+  background-image:linear-gradient(color-mix(in srgb,var(--c) 11%,transparent),color-mix(in srgb,var(--c) 11%,transparent))}
+.f:hover{background-image:linear-gradient(color-mix(in srgb,var(--c) 22%,transparent),color-mix(in srgb,var(--c) 22%,transparent))}
+.f:focus-visible{outline:3px solid var(--ink);outline-offset:-3px;z-index:2}
+.f::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.f .l{font-size:11.5px;color:var(--mute);padding-left:3px}
+.f .l b{color:var(--ink);margin-right:3px}
+.f .st{font-size:12px;font-weight:700;color:var(--c);padding-left:3px}
+.f[data-st="ok"]{--c:var(--ok)}.f[data-st="nf"]{--c:var(--bad)}.f[data-st="il"]{--c:var(--bad)}
+.f[data-st="in"]{--c:var(--inc)}.f[data-st="nn"]{--c:var(--warn)}
+.f[data-st="nf"] .st,.f[data-st="il"] .st,.f[data-st="in"] .st,.f[data-st="nn"] .st{display:block}
+.f[data-st="ok"] .st{display:none}
+.f[data-st="il"]{background-image:repeating-linear-gradient(135deg,color-mix(in srgb,var(--bad) 18%,transparent) 0 6px,transparent 6px 12px)}
+.f[data-st="in"]{background-image:linear-gradient(color-mix(in srgb,var(--inc) 16%,transparent),color-mix(in srgb,var(--inc) 16%,transparent))}
+.f[data-st="nf"]{background-image:linear-gradient(color-mix(in srgb,var(--bad) 16%,transparent),color-mix(in srgb,var(--bad) 16%,transparent))}
+.f[data-st="nn"]{background-image:linear-gradient(color-mix(in srgb,var(--warn) 18%,transparent),color-mix(in srgb,var(--warn) 18%,transparent))}
+.sub{grid-column:1/-1;font-size:11.5px;font-weight:700;padding:4px 14px;background:color-mix(in srgb,var(--line) 12%,transparent);border-bottom:1px solid var(--line)}
+.grid>.f:nth-last-child(1){border-bottom:0}
+.ident{display:grid;grid-template-columns:2fr 1fr;border-bottom:2px solid var(--line)}
+.ident label{display:flex;flex-direction:column;gap:4px;padding:8px 14px 10px;font-size:11.5px;color:var(--mute)}
+.ident label+label{border-left:1px solid var(--line)}
+.ident b{color:var(--ink);font-size:12.5px}
+.ident select,.ident input{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px 10px;width:100%;min-height:38px}
+.ident select:focus-visible,.ident input:focus-visible{outline:3px solid var(--ink);outline-offset:1px}
+@media (max-width:700px){.ident{grid-template-columns:1fr}.ident label+label{border-left:0;border-top:1px solid var(--hair)}}
+.pop{position:fixed;z-index:40;background:var(--pop);color:var(--ink);border:1px solid var(--line);border-radius:8px;
+  box-shadow:0 8px 28px #0004;padding:6px;width:224px;display:none}
+.pop.on{display:block}
+.pop p{margin:2px 6px 6px;font-size:11.5px;color:var(--mute)}
+.pop button{display:flex;align-items:center;gap:9px;width:100%;font:inherit;font-size:13.5px;color:inherit;background:transparent;border:0;border-radius:6px;padding:8px;cursor:pointer;text-align:left}
+.pop button:hover,.pop button:focus-visible{background:color-mix(in srgb,var(--ink) 10%,transparent);outline:none}
+.pop button i{width:14px;height:14px;border-radius:50%;flex:none}
+.pop button[aria-checked="true"]{font-weight:700}
+.pop button[aria-checked="true"]::after{content:"✓";margin-left:auto}
+.rep{display:none;max-width:980px;margin:12px auto 0;padding:12px 16px;background:var(--paper);border:2px solid var(--line);border-radius:4px}
+.rep.on{display:block}
+.rep h3{margin:0 0 8px;font-size:14px}
+.rep ul{margin:0;padding-left:18px}.rep li{margin:2px 0}
+.rep li span{font-weight:700}
+@media (max-width:700px){.f{grid-column:span min(12,calc(var(--s,4)*2))}}
+@media print{.bar,.pop{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>Conferência da ficha SINAN</b>
+  <span class="chip"><i style="background:var(--ok)"></i>Preenchido <span id="c-ok">0</span></span>
+  <span class="chip"><i style="background:var(--bad)"></i>Não preenchido/Ilegível <span id="c-bad">0</span></span>
+  <span class="chip"><i style="background:var(--inc)"></i>Incorreto <span id="c-in">0</span></span>
+  <span class="chip"><i style="background:var(--warn)"></i>Não necessário <span id="c-nn">0</span></span>
+  <span class="chip" id="sendmsg" role="status"></span>
+  <button id="b-send">Enviar</button>
+  <button id="b-rep">Relatório</button>
+  <button id="b-reset">Restaurar padrão</button>
+</div>
+<div class="rep" id="rep" role="region" aria-live="polite"></div>
+<main>
+  <div class="sheet" id="sheet">
+    <div class="head">
+      <div><h1>Ficha de Investigação – Dengue e Febre de Chikungunya</h1>
+      <small>Sinan Online · Ministério da Saúde · SVS 14/03/2016</small></div>
+      <small>Clique em qualquer campo para classificar. Campo sem marcação = preenchido corretamente; alguns blocos já iniciam com outro status padrão.</small>
+    </div>
+    <div class="ident">
+      <label for="monitor"><b>Monitor</b>
+        <select id="monitor">
+          <option value="">Selecione o monitor</option>
+          <option>Aluizio Walter Pena Sousa</option>
+          <option>Carlos Daniel de Freitas Aguiar</option>
+          <option>Donizete Kurufuna</option>
+          <option>Iasmin Braz</option>
+          <option>Maria Luisa Freitas Duarte</option>
+          <option>Rainele moura Viana</option>
+          <option>Sebastião Castilho Sanches Neto</option>
+          <option>Susane Freitas dos Santos</option>
+          <option>Thalita Sinara Azevedo dos Santos</option>
+          <option>Thiago Carvalho Viana</option>
+        </select>
+      </label>
+      <label for="codigo"><b>Código</b>
+        <input id="codigo" type="text" autocomplete="off" maxlength="30" placeholder="Digite o código">
+      </label>
+    </div>
+    <p class="def"><b>Caso suspeito de dengue:</b> febre (2 a 7 dias) e duas ou mais manifestações (náuseas, vômitos, exantema, mialgias, cefaleia, dor retroorbital, petéquias/prova do laço, leucopenia), em quem vive ou viajou nos últimos 14 dias para área com transmissão. <b>Caso suspeito de chikungunya:</b> febre de início súbito e artralgia ou artrite intensa de início agudo, não explicada por outras condições, em área endêmica/epidêmica até 14 dias antes ou com vínculo epidemiológico.</p>
+    <div id="form"></div>
+  </div>
+</main>
+<div class="pop" id="pop" role="menu"><p id="pop-t"></p></div>
+
+<script>
+/* Seções: [título, [ "nº|rótulo|colunas(de 12)" , "#subtítulo" ]] */
+var SN="Febre,Mialgia,Cefaleia,Exantema,Vômito,Náuseas,Dor nas costas,Conjuntivite,Artrite,Artralgia intensa,Petéquias,Leucopenia,Prova do laço positiva,Dor retroorbital".split(",").map(function(x){return "|"+x+"|3"});
+var DP="Diabetes,Doenças hematológicas,Hepatopatias,Doença renal crônica,Hipertensão arterial,Doença ácido-péptica,Doenças auto-imunes".split(",").map(function(x){return "|"+x+"|3"});
+var AL="Dor abdominal intensa e contínua,Vômitos persistentes,Acúmulo de líquidos,Hipotensão postural e/ou lipotímia,Hepatomegalia ≥ 2 cm,Sangramento de mucosa/outras hemorragias,Letargia ou irritabilidade,Aumento progressivo do hematócrito,Queda abrupta de plaquetas".split(",").map(function(x){return "|"+x+"|4"});
+var GR="Pulso débil ou indetectável,PA convergente ≤ 20 mmHg,Tempo de enchimento capilar ≥ 3 s,Extremidades frias,Taquicardia,Hipotensão arterial em fase tardia,Acúmulo de líquidos com insuficiência respiratória,Sangramento do SNC,Hematêmese,Melena,Metrorragia volumosa,AST/ALT > 1.000,Miocardite,Alteração da consciência,Outros órgãos (especificar)".split(",").map(function(x){return "|"+x+"|4"});
+var S=[
+["Dados gerais",["1|Tipo de notificação (2 – Individual)|3","2|Agravo/doença (1 Dengue · 2 Chikungunya) CID10 A90/A92|5","3|Data da notificação|4","4|UF|2","5|Município de notificação|5","|Código (IBGE)|5","6|Unidade de saúde (ou outra fonte notificadora)|7","|Código da unidade|2","7|Data dos primeiros sintomas|3"]],
+["Notificação individual",["8|Nome do paciente|8","9|Data de nascimento|4","10|Idade (1 Hora · 2 Dia · 3 Mês · 4 Ano)|3","11|Sexo (M · F · I)|2","12|Gestante (1º/2º/3º tri · Idade gest. ignorada · Não · Não se aplica · Ignorado)|7","13|Raça/Cor|3","14|Escolaridade|9","15|Número do Cartão SUS|4","16|Nome da mãe|8"]],
+["Dados de residência",["17|UF|2","18|Município de residência|6","|Código (IBGE)|4","19|Distrito|4","20|Bairro|4","21|Logradouro (rua, avenida…)|4","|Código|2","22|Número|2","23|Complemento (apto., casa…)|4","24|Geo campo 1|3","25|Geo campo 2|3","26|Ponto de referência|3","27|CEP|3","28|(DDD) Telefone|3","29|Zona (1 Urbana · 2 Rural · 3 Periurbana · 9 Ignorado)|4","30|País (se residente fora do Brasil)|2"]],
+["Dados complementares do caso",["31|Data da investigação|4","32|Ocupação|8"]],
+["Dados clínicos e laboratoriais",["#33 · Sinais clínicos (1 Sim · 2 Não)"].concat(SN,["#34 · Doenças pré-existentes (1 Sim · 2 Não)"],DP)],
+["Dados laboratoriais",["35|Data da coleta da 1ª amostra (S1)|6","36|Data da coleta da 2ª amostra (S2)|6","37|Sorologia IgM Dengue (S1/S2)|6","38|Sorologia IgM Chikungunya (S1/S2)|6","39|PRNT – data da coleta|3","40|PRNT – resultado|3","41|Exame NS1 – data da coleta|3","42|Exame NS1 – resultado|3","43|RT-PCR – data da coleta|3","44|RT-PCR – resultado|3","45|Isolamento viral – data da coleta|3","46|Isolamento viral – resultado|3","47|Sorotipo (DENV 1 a 4)|4","48|Histopatologia|4","49|Imunohistoquímica|4"]],
+["Hospitalização",["50|Ocorreu hospitalização? (1 Sim · 2 Não · 9 Ignorado)|4","51|Data da internação|4","52|UF|4","53|Município do hospital|5","|Código (IBGE)|3","54|Nome do hospital|6","|Código|3","55|(DDD) Telefone|3"]],
+["Local provável de infecção (no período de 15 dias)",["56|O caso é autóctone do município de residência? (1 Sim · 2 Não · 3 Indeterminado)|6","57|País|3","58|UF|3","59|Município|4","|Código (IBGE)|3","60|Distrito|3","61|Bairro|2"]],
+["Conclusão",["62|Classificação (5 Descartado · 10 Dengue · 11 Dengue c/ sinais de alarme · 12 Dengue grave · 13 Chikungunya)|7","63|Critério de confirmação/descarte (1 Laboratório · 2 Clínico-epidemiológico · 3 Em investigação)|5","64|Apresentação clínica (1 Aguda · 2 Crônica)|4","65|Evolução do caso|4","66|Data do óbito|2","67|Data do encerramento|2"]],
+["Dados clínicos – Dengue com sinais de alarme e Dengue grave",["#68 · Dengue com sinais de alarme (1 Sim · 2 Não)"].concat(AL,["69|Data de início dos sinais de alarme|4","#70 · Dengue grave (1 Sim · 2 Não)"],GR,["71|Data de início dos sinais de gravidade|4"])],
+["Informações complementares e observações",["|Observações adicionais|12"]],
+["Investigador",["|Município/Unidade de saúde|6","|Código da unidade de saúde|3","|Nome|5","|Função|3","|Assinatura|4"]]
+];
+var ST={ok:["Preenchido","var(--ok)"],nf:["Não preenchido","var(--bad)"],in:["Preenchido incorretamente","var(--inc)"],il:["Ilegível","var(--bad)"],nn:["Não necessário","var(--warn)"]};
+var state={},meta={},form=document.getElementById("form"),pop=document.getElementById("pop"),cur=null,id=0;
+
+/* Status padrão por campo: ok | nf (não preenchido) | nn (não necessário) */
+function defFor(sec,n,l){
+  if(sec==="Dados de residência"){
+    if(n==="30")return "nn";
+    return ["19","23","24","25","26","27"].indexOf(n)>-1||l==="Código"?"nf":"ok";
+  }
+  if(sec==="Dados laboratoriais")return ["37","38","40","42","44","46"].indexOf(n)>-1?"nf":"nn";
+  if(sec.indexOf("Dengue com sinais")>-1)return "nf";
+  if(sec==="Hospitalização")return n==="50"?"ok":"nn";
+  if(sec.indexOf("Local provável")===0)return "nn";
+  if(sec==="Conclusão"&&n==="66")return "nn";
+  return "ok";
+}
+S.forEach(function(sec){
+  var h=document.createElement("h2");h.textContent=sec[0];form.appendChild(h);
+  var g=document.createElement("div");g.className="grid";form.appendChild(g);
+  sec[1].forEach(function(raw){
+    if(raw[0]==="#"){var s=document.createElement("div");s.className="sub";s.textContent=raw.slice(1);g.appendChild(s);return}
+    var p=raw.split("|"),b=document.createElement("button");
+    var d=defFor(sec[0],p[0],p[1]);b.type="button";b.className="f";b.style.setProperty("--s",p[2]);b.dataset.st=d;b.dataset.id=++id;
+    b.innerHTML='<span class="l">'+(p[0]?'<b>'+p[0]+'</b>':'')+p[1]+'</span><span class="st">'+(d==="ok"?"":ST[d][0])+'</span>';
+    meta[id]={n:p[0],l:p[1],sec:sec[0],d:d,k:null};state[id]=d;
+    b.setAttribute("aria-haspopup","menu");
+    g.appendChild(b);
+  });
+});
+
+pop.insertAdjacentHTML("beforeend",Object.keys(ST).map(function(k){
+  return '<button role="menuitemradio" data-k="'+k+'"><i style="background:'+ST[k][1]+'"></i>'+ST[k][0]+'</button>'}).join(""));
+
+function open(btn){
+  cur=btn;var i=btn.dataset.id;
+  document.getElementById("pop-t").textContent=(meta[i].n?"Campo "+meta[i].n+" · ":"")+meta[i].l.split(" (")[0];
+  [].forEach.call(pop.querySelectorAll("button"),function(o){o.setAttribute("aria-checked",o.dataset.k===state[i])});
+  pop.classList.add("on");
+  var r=btn.getBoundingClientRect(),w=pop.offsetWidth,h=pop.offsetHeight;
+  var x=Math.min(Math.max(8,r.left+12),innerWidth-w-8),y=r.bottom+4;
+  if(y+h>innerHeight-8)y=Math.max(8,r.top-h-4);
+  pop.style.left=x+"px";pop.style.top=y+"px";
+  pop.querySelector('[aria-checked="true"]').focus();
+}
+function close(){pop.classList.remove("on");if(cur)cur.focus({preventScroll:true});cur=null}
+function set(btn,k){
+  var i=btn.dataset.id;state[i]=k;btn.dataset.st=k;
+  btn.querySelector(".st").textContent=k==="ok"?"":ST[k][0];
+  count();if(document.getElementById("rep").classList.contains("on"))report();
+}
+function count(){
+  var c={ok:0,bad:0,in:0,nn:0};
+  for(var i in state){var k=state[i];c[k==="nf"||k==="il"?"bad":k]++}
+  for(var k in c)document.getElementById("c-"+k).textContent=c[k];
+}
+function report(){
+  var rep=document.getElementById("rep"),by={};
+  for(var i in state)if(state[i]!=="ok"){(by[state[i]]=by[state[i]]||[]).push(meta[i])}
+  var mon=document.getElementById("monitor").value,cod=document.getElementById("codigo").value.trim();
+  function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+  var out="<h3>Relatório da conferência</h3><p style=\"margin:0 0 6px\"><b>Monitor:</b> "+(esc(mon)||"não informado")+" · <b>Código:</b> "+(esc(cod)||"não informado")+"</p>";
+  var any=false;
+  ["nf","il","in","nn"].forEach(function(k){
+    if(!by[k])return;any=true;
+    out+='<p style="margin:8px 0 2px;color:'+ST[k][1]+'"><b>'+ST[k][0]+" ("+by[k].length+")</b></p><ul>"+
+      by[k].map(function(m){return "<li><span>"+(m.n||"–")+"</span> "+m.l+" <small>· "+m.sec+"</small></li>"}).join("")+"</ul>";
+  });
+  if(!any)out+="<p>Nenhuma pendência marcada: todos os campos considerados preenchidos corretamente.</p>";
+  rep.innerHTML=out;
+}
+form.addEventListener("click",function(e){var b=e.target.closest(".f");if(b){e.stopPropagation();open(b)}});
+pop.addEventListener("click",function(e){var o=e.target.closest("button");if(o&&cur){set(cur,o.dataset.k);close()}});
+document.addEventListener("click",function(e){if(pop.classList.contains("on")&&!pop.contains(e.target))close()});
+document.addEventListener("keydown",function(e){
+  if(!pop.classList.contains("on"))return;
+  if(e.key==="Escape")close();
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){
+    e.preventDefault();var o=[].slice.call(pop.querySelectorAll("button")),i=o.indexOf(document.activeElement);
+    o[(i+(e.key==="ArrowDown"?1:-1)+o.length)%o.length].focus();
+  }
+});
+addEventListener("scroll",function(){if(pop.classList.contains("on"))close()},{passive:true});
+document.getElementById("b-rep").onclick=function(){var r=document.getElementById("rep");r.classList.toggle("on");if(r.classList.contains("on"))report()};
+document.getElementById("b-reset").onclick=function(){
+  [].forEach.call(document.querySelectorAll(".f"),function(b){set(b,meta[b.dataset.id].d)});
+};
+["monitor","codigo"].forEach(function(n){
+  document.getElementById(n).addEventListener("input",function(){if(document.getElementById("rep").classList.contains("on"))report()});
+});
+/* ===== Envio ao Google Forms ===== */
+var FORM_URL="https://docs.google.com/forms/u/0/d/e/1FAIpQLSd2tU_hVhF2wf4aZAWOeKP1CED6HYTBjNGVfoMfaSp5DVY_4w/formResponse";
+var ENT={"1":"1649548204","2":"1187663401","3":"1745076302","4":"356430689","5":"4986457","Dados ge|Código (IBGE)":"136939076","6":"626422573","Código da unidade":"1314817118","7":"157252762",
+"8":"579681301","9":"769933927","10":"1308961666","11":"660669035","12":"1619836371","13":"708578567","14":"1487274075","15":"1144366446","16":"1170933623",
+"17":"1610092619","18":"508024044","Dados de|Código (IBGE)":"1467016564","19":"21316610","20":"1979910926","21":"1915268135","Dados de|Código":"1428264407","22":"1485732463","23":"1387398193","24":"505371567","25":"1012412162","26":"701060077","27":"1481831127","28":"2102056443","29":"966203948","30":"206673287",
+"31":"1936056603","32":"1486489610",
+"Febre":"874683140","Mialgia":"39306356","Cefaleia":"1081361194","Exantema":"307830446","Vômito":"1335424015","Náuseas":"1564688939","Dor nas costas":"1590612032","Conjuntivite":"1059131459","Artrite":"1115453088","Artralgia intensa":"1774189555","Petéquias":"1209249059","Leucopenia":"222391259","Prova do laço positiva":"581085478","Dor retroorbital":"837145312",
+"Diabetes":"892488226","Doenças hematológicas":"393818974","Hepatopatias":"1969862692","Doença renal crônica":"2141170809","Hipertensão arterial":"1334507944","Doença ácido-péptica":"404630757","Doenças auto-imunes":"1570705185",
+"35":"1618447191","36":"19379180","37":"1923448968","38":"1737463067","39":"887320906","40":"455942485","41":"318551914","42":"2082336636","43":"1289320154","44":"2026188200","45":"1893336719","46":"1506930786","47":"1114863249","48":"1467738382","49":"1494561377",
+"50":"1577884213","51":"2036383591","52":"1235439734","53":"1488557200","Hospital|Código (IBGE)":"608621313","54":"1957419474","Hospital|Código":"316181877","55":"158673787",
+"56":"1648027591","57":"1269430405","58":"1225362347","59":"1320391760","Local pr|Código (IBGE)":"91712514","60":"839099843","61":"444957895",
+"62":"1264116684","63":"1349458914","64":"1106044266","65":"1534213449","66":"959619613","67":"1257379947",
+"Dor abdominal intensa e contínua":"1548548975","Vômitos persistentes":"1850276581","Acúmulo de líquidos":"788953054","Hipotensão postural e/ou lipotímia":"1813197570","Hepatomegalia ≥ 2 cm":"535350398","Sangramento de mucosa/outras hemorragias":"1977770581","Letargia ou irritabilidade":"972971672","Aumento progressivo do hematócrito":"1941183894","Queda abrupta de plaquetas":"1665758290","69":"5941693",
+"Pulso débil ou indetectável":"1153049713","PA convergente ≤ 20 mmHg":"1511576280","Tempo de enchimento capilar ≥ 3 s":"511309277","Extremidades frias":"151334790","Taquicardia":"1781021725","Hipotensão arterial em fase tardia":"361004275","Acúmulo de líquidos com insuficiência respiratória":"850059832","Sangramento do SNC":"1587696646","Hematêmese":"1093470758","Melena":"362775879","Metrorragia volumosa":"1197182467","AST/ALT > 1.000":"321303941","Miocardite":"1406133551","Alteração da consciência":"477443227","Outros órgãos (especificar)":"1763284420","71":"165982740",
+"Observações adicionais":"1262888166",
+"Município/Unidade de saúde":"130346365","Código da unidade de saúde":"1800615619","Nome":"405353129","Função":"928914714","Assinatura":"1831335049"};
+var E_MON="271714858",E_COD="536554909",SEV={ok:0,nn:1,in:2,il:3,nf:4};
+for(var q in meta){var m=meta[q];m.k=m.n||((m.l==="Código"||m.l==="Código (IBGE)")?m.sec.slice(0,8)+"|"+m.l:m.l)}
+var gf=document.createElement("iframe");gf.name="gf";gf.hidden=true;gf.title="envio";document.body.appendChild(gf);
+var sending=false,bs=document.getElementById("b-send"),sm=document.getElementById("sendmsg");
+gf.addEventListener("load",function(){
+  if(!sending)return;sending=false;bs.disabled=false;
+  sm.textContent="Enviado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" – confirme na planilha do formulário";
+});
+bs.onclick=function(){
+  var mon=document.getElementById("monitor"),cod=document.getElementById("codigo");
+  if(!mon.value){sm.textContent="Selecione o monitor antes de enviar.";mon.focus();mon.scrollIntoView({block:"center"});return}
+  if(!cod.value.trim()){sm.textContent="Digite o código antes de enviar.";cod.focus();cod.scrollIntoView({block:"center"});return}
+  var best={},miss=[];
+  for(var i in state){var e=ENT[meta[i].k];if(!e){miss.push(meta[i].l);continue}
+    if(best[e]===undefined||SEV[state[i]]>SEV[best[e]])best[e]=state[i]}
+  var f=document.createElement("form");f.method="POST";f.action=FORM_URL;f.target="gf";f.style.display="none";
+  function add(n,v){var x=document.createElement("input");x.type="hidden";x.name="entry."+n;x.value=v;f.appendChild(x)}
+  add(E_MON,mon.value);add(E_COD,cod.value.trim());
+  for(var e2 in best)add(e2,ST[best[e2]][0]);
+  document.body.appendChild(f);sending=true;bs.disabled=true;sm.textContent="Enviando…";
+  if(miss.length)console.warn("Campos sem entry no formulário:",miss);
+  f.submit();setTimeout(function(){f.remove()},1000);
+};
+count();
+</script>
+</body>
+</html>
