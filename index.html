@@ -77,7 +77,20 @@ h2{margin:0;padding:5px 14px;font-size:12.5px;background:var(--line);color:var(-
 .rep ul{margin:0;padding-left:18px}.rep li{margin:2px 0}
 .rep li span{font-weight:700}
 @media (max-width:700px){.f{grid-column:span min(12,calc(var(--s,4)*2))}}
-@media print{.bar,.pop{display:none}body{background:#fff}}
+.sendbox{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:10px 16px;padding:14px;border-top:2px solid var(--line)}
+#sendmsg{font-size:12.5px;color:var(--mute);margin-right:auto}
+#b-send{font:inherit;font-size:15px;font-weight:700;color:#fff;background:var(--ok);border:0;border-radius:8px;padding:12px 28px;min-height:44px;cursor:pointer}
+#b-send:hover{filter:brightness(1.1)}
+#b-send:disabled{opacity:.6;cursor:wait}
+@media (max-width:700px){#b-send{width:100%}}
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:16px;background:#000a}
+.modal.on{display:flex}
+.modal .box{background:var(--pop);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 40px #0006;max-width:360px;width:100%;padding:24px 22px 20px;text-align:center}
+.modal .ic{width:52px;height:52px;border-radius:50%;background:var(--ok);color:#fff;font-size:30px;line-height:52px;margin:0 auto 12px}
+.modal h3{margin:0 0 6px;font-size:18px}
+.modal p{margin:0 0 16px;font-size:13px;color:var(--mute)}
+.modal button{font:inherit;font-size:15px;font-weight:700;color:#fff;background:var(--ok);border:0;border-radius:8px;padding:11px 32px;min-height:44px;cursor:pointer}
+@media print{.modal{display:none!important}.bar,.pop,.sendbox{display:none}body{background:#fff}}
 </style>
 </head>
 <body>
@@ -87,8 +100,6 @@ h2{margin:0;padding:5px 14px;font-size:12.5px;background:var(--line);color:var(-
   <span class="chip"><i style="background:var(--bad)"></i>Não preenchido/Ilegível <span id="c-bad">0</span></span>
   <span class="chip"><i style="background:var(--inc)"></i>Incorreto <span id="c-in">0</span></span>
   <span class="chip"><i style="background:var(--warn)"></i>Não necessário <span id="c-nn">0</span></span>
-  <span class="chip" id="sendmsg" role="status"></span>
-  <button id="b-send">Enviar</button>
   <button id="b-open">Abrir no formulário</button>
   <button id="b-rep">Relatório</button>
   <button id="b-reset">Restaurar padrão</button>
@@ -123,8 +134,20 @@ h2{margin:0;padding:5px 14px;font-size:12.5px;background:var(--line);color:var(-
     </div>
     <p class="def"><b>Caso suspeito de dengue:</b> febre (2 a 7 dias) e duas ou mais manifestações (náuseas, vômitos, exantema, mialgias, cefaleia, dor retroorbital, petéquias/prova do laço, leucopenia), em quem vive ou viajou nos últimos 14 dias para área com transmissão. <b>Caso suspeito de chikungunya:</b> febre de início súbito e artralgia ou artrite intensa de início agudo, não explicada por outras condições, em área endêmica/epidêmica até 14 dias antes ou com vínculo epidemiológico.</p>
     <div id="form"></div>
+    <div class="sendbox">
+      <span id="sendmsg" role="status" aria-live="polite"></span>
+      <button id="b-send" type="button">Enviar</button>
+    </div>
   </div>
 </main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="box">
+    <div class="ic" aria-hidden="true">✓</div>
+    <h3 id="m-t">Ficha enviada</h3>
+    <p id="m-p">O envio foi disparado. A página será recarregada.</p>
+    <button type="button" id="m-ok">OK</button>
+  </div>
+</div>
 <div class="pop" id="pop" role="menu"><p id="pop-t"></p></div>
 
 <script>
@@ -256,9 +279,18 @@ var E_MON="271714858",E_COD="536554909",SEV={ok:0,nn:1,in:2,il:3,nf:4};
 for(var q in meta){var m=meta[q];m.k=m.n||((m.l==="Código"||m.l==="Código (IBGE)")?m.sec.slice(0,8)+"|"+m.l:m.l)}
 var gf=document.createElement("iframe");gf.name="gf";gf.hidden=true;gf.title="envio";document.body.appendChild(gf);
 var sending=false,bs=document.getElementById("b-send"),sm=document.getElementById("sendmsg");
+var mdl=document.getElementById("modal"),mt=null;
+function done(){
+  bs.disabled=true;sm.textContent="";
+  var n=5,p=document.getElementById("m-p");
+  function tick(){p.textContent="O Google não confirma o recebimento; verifique a planilha. Recarregando em "+n+" s…"}
+  tick();mdl.classList.add("on");document.getElementById("m-ok").focus();
+  clearInterval(mt);mt=setInterval(function(){n--;if(n<=0){clearInterval(mt);location.reload()}else tick()},1000);
+}
+document.getElementById("m-ok").onclick=function(){location.reload()};
 gf.addEventListener("load",function(){
   if(!sending)return;sending=false;bs.disabled=false;
-  sm.textContent="Envio disparado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" (sem confirmação do Google) – verifique a planilha";
+  done();
 });
 bs.onclick=function(){
   var mon=document.getElementById("monitor"),cod=document.getElementById("codigo");
@@ -277,12 +309,11 @@ bs.onclick=function(){
   var body=new URLSearchParams();
   [].forEach.call(f.querySelectorAll("input"),function(x){body.append(x.name,x.value)});
   fetch(FORM_URL,{method:"POST",mode:"no-cors",body:body}).then(function(){
-    sending=false;bs.disabled=false;f.remove();
-    sm.textContent="Envio disparado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" (sem confirmação do Google) – verifique a planilha";
+    sending=false;f.remove();done();
   }).catch(function(){f.submit();setTimeout(function(){f.remove()},1000)});
 };
 /* Formulário com seções: o Google só grava se receber o histórico de páginas (0 = primeira). Ajuste se o nº de páginas for outro. */
-var PAGES="0,1,2,3,4,5,6,7,8,9,10";
+var PAGES="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14";
 var VIEW_URL=FORM_URL.replace("/formResponse","/viewform");
 document.getElementById("b-open").onclick=function(){
   var mon=document.getElementById("monitor"),cod=document.getElementById("codigo");
