@@ -236,7 +236,7 @@ document.getElementById("b-reset").onclick=function(){
   document.getElementById(n).addEventListener("input",function(){if(document.getElementById("rep").classList.contains("on"))report()});
 });
 /* ===== Envio ao Google Forms ===== */
-var FORM_URL="https://docs.google.com/forms/u/0/d/e/1FAIpQLSd2tU_hVhF2wf4aZAWOeKP1CED6HYTBjNGVfoMfaSp5DVY_4w/formResponse";
+var FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSd2tU_hVhF2wf4aZAWOeKP1CED6HYTBjNGVfoMfaSp5DVY_4w/formResponse";
 var ENT={"1":"1649548204","2":"1187663401","3":"1745076302","4":"356430689","5":"4986457","Dados ge|Código (IBGE)":"136939076","6":"626422573","Código da unidade":"1314817118","7":"157252762",
 "8":"579681301","9":"769933927","10":"1308961666","11":"660669035","12":"1619836371","13":"708578567","14":"1487274075","15":"1144366446","16":"1170933623",
 "17":"1610092619","18":"508024044","Dados de|Código (IBGE)":"1467016564","19":"21316610","20":"1979910926","21":"1915268135","Dados de|Código":"1428264407","22":"1485732463","23":"1387398193","24":"505371567","25":"1012412162","26":"701060077","27":"1481831127","28":"2102056443","29":"966203948","30":"206673287",
@@ -257,7 +257,7 @@ var gf=document.createElement("iframe");gf.name="gf";gf.hidden=true;gf.title="en
 var sending=false,bs=document.getElementById("b-send"),sm=document.getElementById("sendmsg");
 gf.addEventListener("load",function(){
   if(!sending)return;sending=false;bs.disabled=false;
-  sm.textContent="Enviado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" – confirme na planilha do formulário";
+  sm.textContent="Envio disparado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" (sem confirmação do Google) – verifique a planilha";
 });
 bs.onclick=function(){
   var mon=document.getElementById("monitor"),cod=document.getElementById("codigo");
